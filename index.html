@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ngữ pháp tiếng Trung HSK 3–6 · Hệ thống bài giảng</title>
+<meta name="description" content="Hệ thống bài giảng ngữ pháp tiếng Trung biên soạn lại từ 《国际汉语教师语法教学手册》— 杨玉玲. 62 chủ điểm, 10 nhóm, dành cho người Việt tự học HSK 3–6." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="dot" aria-hidden="true"></span>
+      <span>
+        Ngữ pháp tiếng Trung <small>HSK 3–6 · phỏng theo Yang Yuling</small>
+      </span>
+    </a>
+    <span class="spacer"></span>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <span class="kbd cn">国际汉语教师语法教学手册</span>
+    <h1>62 điểm ngữ pháp cốt lõi, biên soạn lại cho người Việt</h1>
+    <p class="lead">
+      Hệ thống bài giảng dựa trên cuốn sách giáo trình ngữ pháp dành cho giáo viên CTCSOL của tác giả 杨玉玲 (Yang Yuling). Mỗi điểm ngữ pháp được trình bày lại theo lối <strong>dễ hiểu, sư phạm hiện đại</strong>: giải thích trực quan, công thức rõ ràng, ví dụ song ngữ Hán–Pinyin–Việt, lỗi người Việt thường mắc, mẹo ghi nhớ và quiz nhỏ.
+    </p>
+    <div class="meta">
+      <span>📚 62 chủ điểm</span>
+      <span>🗂 10 nhóm logic</span>
+      <span>📱 Mobile-first</span>
+      <span>🎯 HSK 3–6</span>
+      <span>🇻🇳 Giải thích bằng tiếng Việt</span>
+    </div>
+  </section>
+
+  <div class="search-wrap">
+    <input id="searchInput" type="search" placeholder="🔍 Tìm chủ điểm (vd: 把, le, bổ ngữ, so sánh, '了' ...)" aria-label="Tìm chủ điểm ngữ pháp" />
+  </div>
+
+  <div class="section-title">
+    <h2>Các nhóm chủ điểm <span class="cn">分类</span></h2>
+    <span class="count">10 nhóm · 62 mục · +1 trang ôn tập</span>
+  </div>
+
+  <div class="group-grid" id="groupGrid">
+
+    <a class="group-card tint-peach" href="01-thoi-gian-khong-gian.html"
+       data-search="thời gian không gian 时间词 方位词 时间状语 处所状语 正在 zai vị trí phương vị địa điểm shijianci fangweici zhuangyu zai zhengzai chusu">
+      <span class="num">Nhóm 01</span>
+      <h3>Thời gian & Không gian</h3>
+      <div class="cn">时间词 · 方位词 · 时间/处所状语 · 正在 + V</div>
+      <p>Cách diễn đạt năm/tháng/ngày/giờ, từ chỉ phương vị, trạng ngữ chỉ thời gian–địa điểm và cấu trúc đang xảy ra.</p>
+      <div class="topics">
+        <span class="chip">时间词1</span><span class="chip">时间词2</span><span class="chip">方位词</span>
+        <span class="chip">时间状语</span><span class="chip">处所状语</span><span class="chip">正在+V</span>
+      </div>
+    </a>
+
+    <a class="group-card tint-mint" href="02-phan-loai-tu-co-ban.html"
+       data-search="word class loại từ động từ tính từ lượng từ trùng điệp 重叠 离合词 形容词谓语 量词 dongci xingrongci liangci chongdie lihe weiyu">
+      <span class="num">Nhóm 02</span>
+      <h3>Phân loại từ cơ bản</h3>
+      <div class="cn">动词重叠 · 离合词 · 形容词做谓语 · 形容词重叠 · 量词</div>
+      <p>Các đặc trưng "khó nhằn" của tiếng Trung: lặp động/tính từ, từ ly hợp, tính từ làm vị ngữ, và hệ thống lượng từ.</p>
+      <div class="topics">
+        <span class="chip">动词重叠</span><span class="chip">离合词</span><span class="chip">形容词谓语</span>
+        <span class="chip">形容词重叠</span><span class="chip">量词</span>
+      </div>
+    </a>
+
+    <a class="group-card tint-sky" href="03-dong-tu-nang-nguyen.html"
+       data-search="động từ năng nguyện modal verb 能 会 neng hui nengyuan dongci">
+      <span class="num">Nhóm 03</span>
+      <h3>Động từ năng nguyện</h3>
+      <div class="cn">能愿动词 "能" 和 "会"</div>
+      <p>Phân biệt hai động từ năng nguyện gây nhầm lẫn nhất với người Việt: 能 (néng) và 会 (huì) — "có thể" và "biết / sẽ".</p>
+      <div class="topics"><span class="chip">能</span><span class="chip">会</span></div>
+    </a>
+
+    <a class="group-card tint-rose" href="04-pho-tu.html"
+       data-search="phó từ adverb 也 都 就 才 再 又 还 有点儿 好 差一点儿 究竟 ye dou jiu cai zai you hai youdianr chayidianr jiujing fuci hao chadianr">
+      <span class="num">Nhóm 04</span>
+      <h3>Phó từ thường dùng</h3>
+      <div class="cn">也 · 都 · 就/才 · 再/又 · 还 · 有点儿 · 好 · 差(一)点儿 · 究竟</div>
+      <p>Bộ "phó từ ngắn nhưng tinh tế" — sai một âm, đổi cả ý câu. So sánh từng cặp dễ nhầm.</p>
+      <div class="topics">
+        <span class="chip">也</span><span class="chip">都</span><span class="chip">就/才</span>
+        <span class="chip">再/又</span><span class="chip">还</span><span class="chip">有点儿</span>
+        <span class="chip">好</span><span class="chip">差点儿</span><span class="chip">究竟</span>
+      </div>
+    </a>
+
+    <a class="group-card tint-lavender" href="05-tro-tu.html"
+       data-search="trợ từ particle 了 过 着 le guo zhe 语气助词 动态助词 yuqi dongtai zhuci tro tu ngu khi dong thai">
+      <span class="num">Nhóm 05</span>
+      <h3>Trợ từ (了, 过, 着)</h3>
+      <div class="cn">语气助词 "了" · 动态助词 "了" · 助词 "过" · 助词 "着"</div>
+      <p>"了" có mấy loại? Khi nào dùng 过, khi nào dùng 了? Bài này gỡ rối ba trợ từ kinh điển khiến HSK 3–4 đau đầu.</p>
+      <div class="topics">
+        <span class="chip">语气 了</span><span class="chip">动态 了</span><span class="chip">过</span><span class="chip">着</span>
+      </div>
+    </a>
+
+    <a class="group-card tint-sand" href="06-dinh-ngu-trang-ngu.html"
+       data-search="định ngữ trạng ngữ đối tượng 定语 状语 对象 modifier dingyu zhuangyu duixiang gen dui gei xiang">
+      <span class="num">Nhóm 06</span>
+      <h3>Định ngữ & Đối tượng</h3>
+      <div class="cn">定语 · 对象状语</div>
+      <p>Quy tắc sắp xếp các thành phần bổ nghĩa cho danh từ (定语) và trạng ngữ chỉ đối tượng (对象状语) như 跟、对、给、向…</p>
+      <div class="topics"><span class="chip">定语</span><span class="chip">对象状语</span></div>
+    </a>
+
+    <a class="group-card tint-sky" href="07-bo-ngu.html"
+       data-search="bổ ngữ complement 补语 趋向 结果 时量 动量 可能 程度 状态 起来 下来 出来 过去 过来 buyu quxiang jieguo shiliang dongliang keneng chengdu zhuangtai qilai xialai chulai guolai guoqu">
+      <span class="num">Nhóm 07</span>
+      <h3>Hệ thống Bổ ngữ</h3>
+      <div class="cn">结果 · 时量 · 动量 · 趋向(1–5) · 可能 · 程度 · 状态补语</div>
+      <p>Nhóm lớn nhất của sách: 11 mục về bổ ngữ. Phân biệt 7 loại bổ ngữ chính + 5 nghĩa mở rộng của bổ ngữ xu hướng (起来/下来/出来/过来/过去).</p>
+      <div class="topics">
+        <span class="chip">结果补语</span><span class="chip">时量补语</span><span class="chip">动量补语</span>
+        <span class="chip">趋向 ×5</span><span class="chip">可能补语</span><span class="chip">程度补语</span>
+        <span class="chip">状态补语</span>
+      </div>
+    </a>
+
+    <a class="group-card tint-rose" href="08-cau-dac-biet.html"
+       data-search="câu đặc biệt câu bị động câu so sánh tồn hiện 把 被 比 是的 是 有 存现 把字句 被字句 比字句 兼语 连动 ba bei bi shi de cunxian jianyu liandong gen yiyang shi de">
+      <span class="num">Nhóm 08</span>
+      <h3>Câu đặc biệt</h3>
+      <div class="cn">是 · 有 · 存现 · 比 · 是…的 · 把 · 被 · 兼语 · 连动</div>
+      <p>"Linh hồn" của ngữ pháp tiếng Trung: câu chữ 把, câu bị động 被, câu so sánh 比, nhấn mạnh 是…的, câu tồn tại 存现.</p>
+      <div class="topics">
+        <span class="chip">是字句</span><span class="chip">有字句</span><span class="chip">存现句</span>
+        <span class="chip">比 ×2</span><span class="chip">A跟B一样</span><span class="chip">是…的</span>
+        <span class="chip">把 ×2</span><span class="chip">被</span><span class="chip">兼语</span><span class="chip">连动</span>
+      </div>
+    </a>
+
+    <a class="group-card tint-mint" href="09-cau-truc-co-dinh.html"
+       data-search="cấu trúc cố định 一就 一边 越来越 越越 不但 无论 谁都 哪儿 除了 ngay khi vừa càng càng dù dù yijiu yibian yuelaiyue yueyue budan erqie wulun shuidou nardou chule keyu phuc">
+      <span class="num">Nhóm 09</span>
+      <h3>Cấu trúc cố định & Câu phức</h3>
+      <div class="cn">一…就… · 一边…一边… · 越来越… · 不但…而且… · 无论 · 谁都 · 哪儿都 · 除了…</div>
+      <p>Các "khuôn câu" để nâng cấp từ HSK 4 lên HSK 5–6: nối ý, nhấn mạnh, biểu đạt tăng tiến, phổ quát.</p>
+      <div class="topics">
+        <span class="chip">一…就…</span><span class="chip">一边…一边…</span><span class="chip">越来越…</span>
+        <span class="chip">越…越…</span><span class="chip">不但…而且…</span><span class="chip">无论</span>
+        <span class="chip">谁…都/也</span><span class="chip">哪儿…都/也</span><span class="chip">除了…</span>
+      </div>
+    </a>
+
+    <a class="group-card tint-lavender" href="10-cau-hoi.html"
+       data-search="câu hỏi 疑问句 是非 特指 正反 选择 question type yiwenju shifei tezhi zhengfan xuanze ma ba ne haishi shenme shei nar duoshao ji zenme weishenme">
+      <span class="num">Nhóm 10</span>
+      <h3>Bốn loại câu hỏi</h3>
+      <div class="cn">是非疑问句 · 特指 · 正反 · 选择疑问句</div>
+      <p>Câu hỏi Có/Không, câu hỏi đặc chỉ (用 wh-word), câu hỏi chính phản (V不V), và câu hỏi lựa chọn (A 还是 B).</p>
+      <div class="topics">
+        <span class="chip">是非</span><span class="chip">特指</span><span class="chip">正反</span><span class="chip">选择</span>
+      </div>
+    </a>
+
+    <a class="group-card tint-rose" href="11-on-tap.html"
+       data-search="ôn tập tổng hợp on tap luyen tap practice quiz test review câu hỏi đa câu 综合 练习 zonghe lianxi luyen test full random ngân hàng câu hỏi">
+      <span class="num">🎯 Ôn tập</span>
+      <h3>Ôn tập tổng hợp <span class="chip" style="background:#cce0d3;color:#2c5d40;border-color:#8fbf9f;font-weight:600;margin-left:6px;">Mới</span></h3>
+      <div class="cn">综合练习 · luyện ~90 quiz · random 30 câu</div>
+      <p>Trang luyện tập tổng hợp đa câu hỏi. Random từ ngân hàng 50 câu mới + tự gom 43 quiz có sẵn trong 10 bài. Chấm điểm + giải thích từng câu.</p>
+      <div class="topics">
+        <span class="chip">Full test 30</span><span class="chip">Quick 10</span><span class="chip">Filter theo nhóm</span><span class="chip">Random</span>
+      </div>
+    </a>
+
+  </div>
+  <div id="noResult" class="no-result" style="display:none;">
+    Không tìm thấy chủ điểm nào khớp. Thử từ khoá khác như: bổ ngữ, 把, le, so sánh, modal…
+  </div>
+
+  <div class="section-title">
+    <h2>Mỗi bài học có gì? <span class="cn">学习板块</span></h2>
+  </div>
+
+  <div class="group-grid">
+    <div class="group-card tint-peach" style="cursor:default">
+      <span class="num">📖 Giải thích</span>
+      <h3>Diễn giải dễ hiểu</h3>
+      <p>Khái niệm trình bày bằng tiếng Việt thuần, có ví von trực quan để hiểu logic ngữ pháp, không chỉ là quy tắc khô khan.</p>
+    </div>
+    <div class="group-card tint-sky" style="cursor:default">
+      <span class="num">🧩 Công thức</span>
+      <h3>Cấu trúc rõ ràng</h3>
+      <p>Mỗi mục đều có công thức / khuôn câu nổi bật, đánh dấu các vị trí "slot" có thể thay đổi để dễ luyện tập.</p>
+    </div>
+    <div class="group-card tint-mint" style="cursor:default">
+      <span class="num">✏️ Ví dụ 3 dòng</span>
+      <h3>汉字 · pinyin · nghĩa Việt</h3>
+      <p>Mỗi ví dụ đều có 3 dòng: chữ Hán, phiên âm và nghĩa tiếng Việt. Dễ học đọc, dễ tra cứu khi quên.</p>
+    </div>
+    <div class="group-card tint-rose" style="cursor:default">
+      <span class="num">⚠️ Lỗi sai</span>
+      <h3>Lỗi người Việt hay mắc</h3>
+      <p>So sánh cặp <em>câu sai – câu đúng</em>, kèm phân tích nguyên nhân và cách "chữa" để không mắc lại.</p>
+    </div>
+    <div class="group-card tint-sand" style="cursor:default">
+      <span class="num">💡 Mẹo</span>
+      <h3>Mẹo ghi nhớ</h3>
+      <p>Mẹo bằng tiếng Việt, ví von hình ảnh hoặc liên hệ với tiếng Việt để nhớ lâu hơn quy tắc.</p>
+    </div>
+    <div class="group-card tint-lavender" style="cursor:default">
+      <span class="num">🎯 Quiz</span>
+      <h3>Mini-quiz tương tác</h3>
+      <p>Bấm chọn đáp án, hệ thống chấm đúng/sai ngay và giải thích lý do. Không cần đăng nhập, không lưu dữ liệu.</p>
+    </div>
+  </div>
+
+  <div class="foot">
+    Biên soạn lại từ <em>《国际汉语教师语法教学手册》</em> · 杨玉玲 · 高等教育出版社 (2011).
+    <br/>Hệ thống bài giảng được tái cấu trúc cho người Việt tự học HSK 3–6 · Mobile-first · Không dùng cookie.
+  </div>
+</main>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
