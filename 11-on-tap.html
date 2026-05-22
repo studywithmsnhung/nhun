@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ôn tập tổng hợp · Ngữ pháp tiếng Trung HSK 3–6</title>
+<meta name="description" content="Trang ôn tập tổng hợp đa câu hỏi: random từ ngân hàng 50 câu mới + tự gộp 43 quiz có sẵn trong 10 bài. Chấm điểm, hiện giải thích, đổi bộ câu mới." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  /* ============================================================
+     Style riêng cho trang ôn tập — KHÔNG sửa styles.css chung
+     ============================================================ */
+  .ontap-panel {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: clamp(18px, 3vw, 26px);
+    box-shadow: var(--shadow);
+    margin-bottom: 18px;
+  }
+  .ontap-panel h3.panel-title {
+    margin: 0 0 4px; font-size: 13px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--accent);
+  }
+  .ontap-panel .panel-sub { color: var(--ink-soft); font-size: 14px; margin: 0 0 14px; }
+
+  .ontap-row { display: flex; flex-wrap: wrap; gap: 14px 26px; align-items: flex-start; margin: 10px 0; }
+  .ontap-row .row-label {
+    font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--muted); font-weight: 700; flex-basis: 100%; margin-bottom: 4px;
+  }
+  .ontap-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ontap-chip {
+    cursor: pointer; user-select: none;
+    font-size: 13px; padding: 6px 12px; border-radius: 999px;
+    background: var(--bg-soft); border: 1px solid var(--line);
+    color: var(--ink-soft); transition: all .15s var(--ease);
+    font-family: var(--font-vi);
+  }
+  .ontap-chip:hover { background: #f1eadb; color: var(--ink); }
+  .ontap-chip.active {
+    background: color-mix(in srgb, var(--accent) 14%, #fff);
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
+    color: var(--accent); font-weight: 600;
+  }
+  .ontap-chip .cn { font-family: var(--font-cn); }
+
+  .ontap-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; align-items: center; }
+  .btn {
+    cursor: pointer; user-select: none;
+    font-family: var(--font-vi); font-size: 14px; font-weight: 600;
+    padding: 10px 18px; border-radius: 999px; border: 1px solid var(--line);
+    background: #fff; color: var(--ink);
+    box-shadow: var(--shadow-sm);
+    transition: transform .15s var(--ease), box-shadow .15s var(--ease), background .15s var(--ease);
+  }
+  .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+  .btn.primary {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--lavender-deep) 100%);
+    color: #fff; border-color: transparent;
+  }
+  .btn.primary:hover { filter: brightness(1.05); }
+  .btn.ghost { background: var(--bg-soft); }
+
+  /* Sticky progress bar */
+  .progress-bar {
+    position: sticky; top: 60px; z-index: 40;
+    background: rgba(251,248,243,.96);
+    backdrop-filter: saturate(140%) blur(8px);
+    -webkit-backdrop-filter: saturate(140%) blur(8px);
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 10px 16px; margin: 14px 0 18px;
+    box-shadow: var(--shadow-sm);
+    display: flex; align-items: center; gap: 12px;
+    font-size: 13px; flex-wrap: wrap;
+  }
+  .progress-bar .bar-fill {
+    flex: 1; min-width: 100px;
+    height: 8px; background: var(--bg-soft); border-radius: 999px; overflow: hidden;
+  }
+  .progress-bar .bar-fill > span {
+    display: block; height: 100%;
+    background: linear-gradient(90deg, var(--mint-deep), var(--sky-deep));
+    width: 0%;
+    transition: width .25s var(--ease);
+  }
+  .progress-bar .stat { font-family: var(--font-mono); color: var(--ink-soft); }
+  .progress-bar .stat b { color: var(--ink); }
+  .progress-bar .stat.ok b   { color: var(--mint-deep); }
+  .progress-bar .stat.no b   { color: var(--rose-deep); }
+
+  /* Test area — render quiz cards (giống component .quiz) */
+  .test-area { display: grid; gap: 14px; }
+  .test-area .quiz-card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 16px 18px;
+    box-shadow: var(--shadow-sm);
+    transition: border-color .2s var(--ease);
+  }
+  .test-area .quiz-card.answered-ok  { border-color: color-mix(in srgb, var(--mint-deep) 40%, var(--line)); }
+  .test-area .quiz-card.answered-no  { border-color: color-mix(in srgb, var(--rose-deep) 40%, var(--line)); }
+  .quiz-card .qhead {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .quiz-card .qhead .num {
+    font-family: var(--font-mono); font-size: 12px;
+    background: var(--bg-soft); border: 1px solid var(--line);
+    padding: 2px 8px; border-radius: 999px; color: var(--ink-soft);
+  }
+  .quiz-card .qhead .tag {
+    font-size: 11px; padding: 2px 8px; border-radius: 999px;
+    background: color-mix(in srgb, var(--accent) 10%, #fff);
+    color: var(--accent); font-weight: 600;
+  }
+  .quiz-card .q {
+    font-family: var(--font-cn); font-size: 16px;
+    margin: 4px 0 10px; line-height: 1.55;
+  }
+  .quiz-card .q .blank {
+    display: inline-block; min-width: 60px;
+    border-bottom: 2px dashed var(--mint-deep); height: 1.2em; vertical-align: text-bottom;
+    margin: 0 4px;
+  }
+  .quiz-card .opts { display: flex; flex-direction: column; gap: 6px; }
+  .quiz-card .opt {
+    cursor: pointer; user-select: none;
+    font-size: 14px; padding: 8px 14px; border-radius: 12px;
+    background: var(--bg-soft); border: 1px solid var(--line);
+    color: var(--ink);
+    transition: all .15s var(--ease);
+    line-height: 1.45;
+  }
+  .quiz-card .opt:has(.cn) { font-family: var(--font-cn); font-size: 15px; }
+  .quiz-card .opt .cn  { font-family: var(--font-cn); }
+  .quiz-card .opt:hover:not(.disabled) { background: #f1eadb; }
+  .quiz-card .opt.correct { background: #cce0d3; border-color: #8fbf9f; color: #2c5d40; }
+  .quiz-card .opt.wrong   { background: #f4c2c2; border-color: #d77878; color: #7c2424; }
+  .quiz-card .opt.disabled { cursor: default; }
+  .quiz-card .feedback {
+    font-size: 13px; margin-top: 8px; min-height: 1em;
+    color: var(--ink-soft);
+  }
+  .quiz-card .feedback.ok { color: var(--mint-deep); }
+  .quiz-card .feedback.no { color: var(--rose-deep); }
+
+  /* Result modal */
+  .result-modal {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(42,39,48,.55);
+    display: none; align-items: center; justify-content: center;
+    padding: 20px;
+    animation: fade-in .25s var(--ease);
+  }
+  .result-modal.show { display: flex; }
+  .result-card {
+    background: var(--card); border-radius: var(--radius-lg);
+    max-width: 560px; width: 100%;
+    padding: clamp(20px, 3vw, 30px);
+    box-shadow: var(--shadow-lg);
+    max-height: 90vh; overflow-y: auto;
+  }
+  .result-card .score {
+    text-align: center; padding: 16px 0;
+  }
+  .result-card .score .big {
+    font-size: clamp(34px, 8vw, 50px); font-weight: 700;
+    background: linear-gradient(135deg, var(--accent), var(--lavender-deep));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    letter-spacing: -.02em;
+  }
+  .result-card .score .pct { color: var(--ink-soft); font-size: 14px; }
+  .result-card .score .verdict { margin-top: 6px; font-size: 15px; font-weight: 600; }
+  .result-card .verdict.gold   { color: var(--sand-deep); }
+  .result-card .verdict.green  { color: var(--mint-deep); }
+  .result-card .verdict.blue   { color: var(--sky-deep); }
+  .result-card .verdict.rose   { color: var(--rose-deep); }
+  .result-card .breakdown {
+    background: var(--bg-soft); border-radius: var(--radius);
+    padding: 12px 14px; margin: 14px 0; font-size: 13px;
+  }
+  .result-card .breakdown div { display: flex; justify-content: space-between; padding: 3px 0; }
+  .result-card .breakdown div span:last-child { font-family: var(--font-mono); font-weight: 600; }
+  .result-card .actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+
+  /* loading status */
+  .load-status {
+    font-size: 12px; color: var(--muted);
+    font-family: var(--font-mono);
+    margin-left: auto;
+  }
+  .load-status.ok { color: var(--mint-deep); }
+  .load-status.warn { color: var(--sand-deep); }
+
+  /* hidden helper */
+  .hide { display: none !important; }
+
+  @media (max-width: 640px) {
+    .progress-bar { padding: 8px 12px; font-size: 12px; }
+    .ontap-row { gap: 10px 18px; }
+    .quiz-card .opt { font-size: 13px; padding: 8px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="dot" aria-hidden="true"></span>
+      <span>Ngữ pháp tiếng Trung <small>HSK 3–6 · phỏng theo Yang Yuling</small></span>
+    </a>
+    <span class="spacer"></span>
+    <a class="crumb" href="index.html">← Trang chủ</a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <span class="kbd">Ôn tập tổng hợp · 综合练习</span>
+    <h1>Trang ôn tập — luyện 30 câu mỗi ngày</h1>
+    <p class="lead">
+      Random câu hỏi từ <strong>~90 quiz</strong> phủ đều 10 nhóm chủ điểm: ngân hàng <strong>50 câu mới</strong>
+      embed sẵn + <strong>tự động gom 43 quiz</strong> đã có trong 10 bài giảng (nếu trình duyệt cho phép).
+      Chọn số câu, chọn nhóm chủ điểm, bấm <em>Bắt đầu</em>. Làm xong bấm <em>Nộp bài</em> để chấm điểm.
+    </p>
+    <div class="meta">
+      <span>🎲 Random mỗi lần</span>
+      <span>🎯 Chấm điểm + giải thích</span>
+      <span>📂 Lọc theo nhóm</span>
+      <span>📱 Mobile-first</span>
+    </div>
+  </section>
+
+  <!-- =================== Settings Panel =================== -->
+  <section class="ontap-panel" id="settingsPanel">
+    <h3 class="panel-title">⚙️ Cài đặt bộ đề</h3>
+    <p class="panel-sub">Mặc định: Full test 30 câu, gồm tất cả các nhóm. Đổi tuỳ thích, rồi bấm "Bắt đầu".</p>
+
+    <div class="ontap-row">
+      <div class="row-label">Số câu</div>
+      <div class="ontap-chips" id="sizeChips">
+        <span class="ontap-chip" data-size="10">10 câu</span>
+        <span class="ontap-chip" data-size="20">20 câu</span>
+        <span class="ontap-chip active" data-size="30">30 câu</span>
+        <span class="ontap-chip" data-size="50">50 câu</span>
+      </div>
+    </div>
+
+    <div class="ontap-row">
+      <div class="row-label">Nhóm chủ điểm</div>
+      <div class="ontap-chips" id="groupChips">
+        <span class="ontap-chip active" data-group="all">Tất cả</span>
+        <span class="ontap-chip" data-group="1">01 · Thời gian/KG</span>
+        <span class="ontap-chip" data-group="2">02 · Phân loại từ</span>
+        <span class="ontap-chip" data-group="3">03 · 能/会</span>
+        <span class="ontap-chip" data-group="4">04 · Phó từ</span>
+        <span class="ontap-chip" data-group="5">05 · Trợ từ</span>
+        <span class="ontap-chip" data-group="6">06 · Định ngữ/Đối tượng</span>
+        <span class="ontap-chip" data-group="7">07 · Bổ ngữ</span>
+        <span class="ontap-chip" data-group="8">08 · Câu đặc biệt</span>
+        <span class="ontap-chip" data-group="9">09 · Cấu trúc cố định</span>
+        <span class="ontap-chip" data-group="10">10 · Câu hỏi</span>
+      </div>
+    </div>
+
+    <div class="ontap-actions">
+      <button class="btn primary" id="startBtn">🎲 Bắt đầu / Đổi bộ câu mới</button>
+      <button class="btn ghost hide" id="submitBtn">📝 Nộp bài & chấm điểm</button>
+      <span class="load-status" id="loadStatus"></span>
+    </div>
+  </section>
+
+  <!-- =================== Progress Bar =================== -->
+  <div class="progress-bar hide" id="progressBar">
+    <span class="stat">Đã làm: <b id="statDone">0</b>/<b id="statTotal">0</b></span>
+    <span class="stat ok">Đúng: <b id="statOk">0</b></span>
+    <span class="stat no">Sai: <b id="statNo">0</b></span>
+    <div class="bar-fill"><span id="barFill"></span></div>
+  </div>
+
+  <!-- =================== Test Area =================== -->
+  <section class="test-area" id="testArea">
+    <!-- quiz cards rendered by JS -->
+  </section>
+
+  <!-- =================== Empty hint =================== -->
+  <section class="ontap-panel" id="emptyHint">
+    <h3 class="panel-title">🎯 Bắt đầu ôn tập</h3>
+    <p class="panel-sub">
+      Chọn số câu và phạm vi nhóm ở trên, sau đó bấm <strong>Bắt đầu</strong>.
+      Mỗi lần bấm sẽ tạo ra một bộ đề <em>ngẫu nhiên mới</em>, không trùng lần trước.
+      Khi đang làm, bấm chọn đáp án để biết đúng/sai ngay. Hết bài bấm <strong>Nộp bài</strong> để xem tổng điểm.
+    </p>
+    <ul style="color: var(--ink-soft); font-size: 14px; padding-left: 18px; margin: 8px 0 0;">
+      <li>Ngân hàng câu hỏi gồm 2 phần: 50 câu mới (đã đóng gói) + tự gom quiz có sẵn trong 10 bài.</li>
+      <li>Nếu mở file trực tiếp (file://), trình duyệt thường chặn fetch — khi đó chỉ dùng 50 câu mới embed sẵn. Vẫn đủ để luyện.</li>
+      <li>Câu hỏi trùng giữa 2 nguồn được tự động khử trùng. Mỗi lần bấm "Bắt đầu" là random lại.</li>
+    </ul>
+  </section>
+
+  <nav class="pager">
+    <a href="10-cau-hoi.html">
+      <div class="label">← Nhóm trước</div>
+      <div class="ttl">10 · Bốn loại câu hỏi</div>
+    </a>
+    <a class="next" href="index.html">
+      <div class="label">Quay lại →</div>
+      <div class="ttl">Trang chủ · 10 nhóm</div>
+    </a>
+  </nav>
+
+  <div class="foot">
+    Ôn tập tổng hợp · 综合练习 · Phase 6.1 của hệ thống bài giảng. <br/>
+    Phỏng theo 《国际汉语教师语法教学手册》 — 杨玉玲.
+  </div>
+</main>
+
+<!-- =================== Result Modal =================== -->
+<div class="result-modal" id="resultModal">
+  <div class="result-card">
+    <div class="score">
+      <div class="big" id="scoreBig">0/0</div>
+      <div class="pct" id="scorePct">0%</div>
+      <div class="verdict" id="scoreVerdict">—</div>
+    </div>
+    <div class="breakdown" id="scoreBreakdown">
+      <!-- per-group breakdown -->
+    </div>
+    <div class="actions">
+      <button class="btn primary" id="resultRestart">🎲 Làm bộ mới</button>
+      <button class="btn ghost" id="resultClose">Xem lại đáp án</button>
+    </div>
+  </div>
+</div>
+
+<!-- =================== JSON Question Bank + Engine =================== -->
+<script>
+(function () {
+  'use strict';
+
+  // ============================================================
+  // 1. NGÂN HÀNG CÂU HỎI MỚI (50 câu, embed JSON)
+  // ============================================================
+  // Mỗi câu: { id, group, topic, stem, options:[{text, correct(0|1), explain}] }
+  // stem có thể chứa <span class="blank"></span> hoặc <strong>...</strong>
+  // ============================================================
+  var BANK = [
+    // ----------- Nhóm 01: Thời gian & Không gian -----------
+    {
+      id: "g01-1", group: 1, topic: "时间状语 · vị trí",
+      stem: "Câu nào ĐÚNG cho ý &quot;Tôi đi học lúc 8 giờ&quot;?",
+      options: [
+        { text: "我去学校在八点。", correct: 0, explain: "Sai — thời gian từ KHÔNG đứng sau địa điểm/V. Tiếng Trung: thời gian đứng TRƯỚC động từ." },
+        { text: "我八点去学校。", correct: 1, explain: "Đúng — trật tự chuẩn: 主 + 时间 + V + 宾 (chủ + thời gian + động từ + tân ngữ)." },
+        { text: "我去学校八点。", correct: 0, explain: "Sai — thời gian không đứng cuối câu trong tiếng Trung (khác hẳn tiếng Anh/Việt)." },
+        { text: "我去八点学校。", correct: 0, explain: "Sai — thời gian chèn giữa V và 宾 sai cấu trúc." }
+      ]
+    },
+    {
+      id: "g01-2", group: 1, topic: "方位词",
+      stem: "&quot;教室<span class=\"cn\">里</span>有很多学生&quot; — chữ <span class=\"cn\">里</span> ở đây thuộc loại từ nào?",
+      options: [
+        { text: "名词 (danh từ)", correct: 0, explain: "Sai — 里 không phải danh từ độc lập, nó luôn đi sau một danh từ khác." },
+        { text: "方位词 (từ chỉ phương vị)", correct: 1, explain: "Đúng — 里/上/下/前/后/外/内… là 方位词, đặt sau danh từ chỉ vị trí: 教室里 = trong lớp học." },
+        { text: "动词 (động từ)", correct: 0, explain: "Sai — 里 không có chức năng động từ." },
+        { text: "助词 (trợ từ)", correct: 0, explain: "Sai — trợ từ là 了/过/着/的, không phải 里." }
+      ]
+    },
+    {
+      id: "g01-3", group: 1, topic: "正在 + V",
+      stem: "&quot;妈妈<span class=\"blank\"></span>做饭呢&quot; — điền từ thích hợp:",
+      options: [
+        { text: "正在", correct: 1, explain: "Đúng — 正在 + V (+呢) = đang làm. Cấu trúc tiến hành hiện tại điển hình." },
+        { text: "已经", correct: 0, explain: "Sai — 已经 = đã, nghĩa hoàn thành, không phù hợp với hành động đang xảy ra (做饭呢 báo hiệu tiến hành)." },
+        { text: "刚", correct: 0, explain: "Sai — 刚 = vừa mới, cần đi với động từ chỉ hành động đã xong, không khớp với 呢 cuối câu." },
+        { text: "一", correct: 0, explain: "Sai — 一 đơn lẻ không có nghĩa 'đang'. 一边 mới chỉ đồng thời, nhưng cần lặp." }
+      ]
+    },
+    {
+      id: "g01-4", group: 1, topic: "在 + 处所",
+      stem: "Điền giới từ: &quot;我<span class=\"blank\"></span>北京工作&quot;.",
+      options: [
+        { text: "在", correct: 1, explain: "Đúng — 在 + nơi chốn = 'ở…'. 在北京工作 = 'làm việc ở Bắc Kinh'. Đây là 处所状语." },
+        { text: "到", correct: 0, explain: "Sai — 到 = đến (chỉ hướng tới đích), không dùng làm trạng ngữ địa điểm tĩnh." },
+        { text: "从", correct: 0, explain: "Sai — 从 = từ (xuất phát điểm), không dùng với hành động diễn ra ở một nơi." },
+        { text: "离", correct: 0, explain: "Sai — 离 = cách (đo khoảng cách), không phải nơi diễn ra hành động." }
+      ]
+    },
+    {
+      id: "g01-5", group: 1, topic: "时间词 · vị trí",
+      stem: "Câu nào ĐÚNG nhất cho ý &quot;Hôm qua tôi đi siêu thị&quot;?",
+      options: [
+        { text: "昨天我去超市了。", correct: 1, explain: "Đúng — thời gian từ có thể đứng đầu câu, sau đó là 主+V+宾+了. Đây là trật tự tự nhiên nhất." },
+        { text: "我超市去昨天了。", correct: 0, explain: "Sai hoàn toàn — đảo lộn trật tự thành phần." },
+        { text: "我去超市昨天了。", correct: 0, explain: "Sai — thời gian không đứng cuối câu trước 了." },
+        { text: "去超市我昨天了。", correct: 0, explain: "Sai — V đứng đầu không phải trật tự câu trần thuật bình thường." }
+      ]
+    },
+
+    // ----------- Nhóm 02: Phân loại từ cơ bản -----------
+    {
+      id: "g02-1", group: 2, topic: "动词重叠",
+      stem: "Cách lặp ĐÚNG cho động từ 2 âm tiết <span class=\"cn\">学习</span> là:",
+      options: [
+        { text: "学习学习", correct: 1, explain: "Đúng — động từ 2 âm tiết AB lặp thành ABAB (không phải AABB). 学习学习 = học một chút, làm nhẹ giọng." },
+        { text: "学学习习", correct: 0, explain: "Sai — AABB là dạng lặp của TÍNH TỪ (干干净净, 漂漂亮亮), không phải động từ 2 âm tiết." },
+        { text: "学习学", correct: 0, explain: "Sai — chỉ lặp được nguyên cụm AB, không lặp lẻ." },
+        { text: "习学", correct: 0, explain: "Sai — đảo thứ tự âm tiết không tạo lặp." }
+      ]
+    },
+    {
+      id: "g02-2", group: 2, topic: "离合词",
+      stem: "<span class=\"cn\">结婚</span> là từ ly hợp. Câu nào ĐÚNG cấu trúc?",
+      options: [
+        { text: "他结婚了三次。", correct: 0, explain: "Sai — từ ly hợp tách 结|婚, không thể giữ nguyên rồi nhét bổ ngữ ra sau." },
+        { text: "他结了三次婚。", correct: 1, explain: "Đúng — 离合词: V(结) + 了 + 动量(三次) + 宾(婚). Bổ ngữ thời lượng/động lượng CHÈN VÀO GIỮA." },
+        { text: "他三次结婚。", correct: 0, explain: "Sai — bổ ngữ động lượng không đứng trước V." },
+        { text: "他结婚三次了。", correct: 0, explain: "Sai — vẫn để cụm 结婚 liền, không tách ra đúng cách." }
+      ]
+    },
+    {
+      id: "g02-3", group: 2, topic: "形容词谓语",
+      stem: "&quot;他<span class=\"cn\">很高</span>&quot; — tính từ <span class=\"cn\">高</span> đóng vai trò gì?",
+      options: [
+        { text: "Vị ngữ (谓语)", correct: 1, explain: "Đúng — tính từ làm vị ngữ trực tiếp trong tiếng Trung KHÔNG cần 是. Chỉ cần phó từ độ (很/真/非常). Khác hẳn tiếng Anh 'is tall'." },
+        { text: "Định ngữ (定语)", correct: 0, explain: "Sai — định ngữ là từ bổ nghĩa cho danh từ (高山, 高的山), không phải vai trò trong 他很高." },
+        { text: "Trạng ngữ (状语)", correct: 0, explain: "Sai — trạng ngữ bổ nghĩa cho V, đứng trước V (慢慢走)." },
+        { text: "Bổ ngữ (补语)", correct: 0, explain: "Sai — bổ ngữ đứng sau V (跑得快, 写完). 高 ở đây là vị ngữ chính." }
+      ]
+    },
+    {
+      id: "g02-4", group: 2, topic: "形容词重叠",
+      stem: "Lặp tính từ kiểu AABB của <span class=\"cn\">干净</span> là:",
+      options: [
+        { text: "干干净净", correct: 1, explain: "Đúng — tính từ 2 âm tiết AB lặp thành AABB. 干干净净 = sạch sẽ tinh tươm, sắc thái cường điệu." },
+        { text: "干净干净", correct: 0, explain: "Sai — ABAB là dạng lặp của ĐỘNG TỪ 2 âm tiết, không phải tính từ." },
+        { text: "净净干干", correct: 0, explain: "Sai — đảo thứ tự sai hoàn toàn." },
+        { text: "干净净", correct: 0, explain: "Sai — chỉ lặp một âm thì không thành dạng AABB." }
+      ]
+    },
+    {
+      id: "g02-5", group: 2, topic: "量词",
+      stem: "Lượng từ ĐÚNG nhất cho <span class=\"cn\">书</span> (sách): 一<span class=\"blank\"></span>书.",
+      options: [
+        { text: "本", correct: 1, explain: "Đúng — 本 là lượng từ tiêu chuẩn cho sách / vở / cuốn. 一本书 = một cuốn sách." },
+        { text: "个", correct: 0, explain: "Sai — 个 là lượng từ chung chung, KHÔNG nên dùng cho sách dù khẩu ngữ có thể nghe thấy." },
+        { text: "张", correct: 0, explain: "Sai — 张 dùng cho mặt phẳng (giấy, bàn, vé): 一张纸/桌子/票." },
+        { text: "只", correct: 0, explain: "Sai — 只 dùng cho động vật hoặc vật thành đôi (giày, mắt): 一只猫/眼睛/鞋." }
+      ]
+    },
+
+    // ----------- Nhóm 03: 能 / 会 -----------
+    {
+      id: "g03-1", group: 3, topic: "会 (kỹ năng)",
+      stem: "&quot;我<span class=\"cn\">会</span>说汉语&quot; — 会 ở đây mang nghĩa gì?",
+      options: [
+        { text: "Có khả năng làm sau khi học (kỹ năng)", correct: 1, explain: "Đúng — 会 chỉ kỹ năng có được do HỌC. 我会说汉语 = tôi BIẾT nói tiếng Trung (đã học)." },
+        { text: "Có khả năng làm do điều kiện (sức khoẻ/thời gian)", correct: 0, explain: "Sai — nghĩa này là 能, chứ không phải 会." },
+        { text: "Được phép, xin phép", correct: 0, explain: "Sai — nghĩa xin phép là 可以 (lịch sự nhất) hoặc 能." },
+        { text: "Có thể (giả định, có lẽ)", correct: 0, explain: "Sai — 会 dự đoán tương lai cũng có, nhưng câu này nghĩa kỹ năng (do 说汉语 là kỹ năng học được)." }
+      ]
+    },
+    {
+      id: "g03-2", group: 3, topic: "会 (dự đoán)",
+      stem: "&quot;明天<span class=\"cn\">会</span>下雨&quot; — 会 ở đây nghĩa là:",
+      options: [
+        { text: "Biết, có kỹ năng", correct: 0, explain: "Sai — câu này không nói về kỹ năng, chủ ngữ 'ngày mai' không học gì cả." },
+        { text: "Có thể (do học)", correct: 0, explain: "Sai — không liên quan đến học." },
+        { text: "Sẽ (dự đoán khả năng cao)", correct: 1, explain: "Đúng — 会 còn dùng cho dự đoán tương lai: '(theo dự báo) sẽ + V'. 明天会下雨 = ngày mai sẽ mưa." },
+        { text: "Được phép", correct: 0, explain: "Sai — nghĩa xin phép là 可以." }
+      ]
+    },
+    {
+      id: "g03-3", group: 3, topic: "不能",
+      stem: "&quot;Tôi đau chân, không thể chạy được&quot; — dịch ĐÚNG nhất:",
+      options: [
+        { text: "我脚疼,不会跑。", correct: 0, explain: "Sai — 不会跑 nghĩa là 'không biết chạy / chưa học cách chạy'. Không phù hợp với người trưởng thành đau chân." },
+        { text: "我脚疼,不能跑。", correct: 1, explain: "Đúng — 不能 = không thể (do ĐIỀU KIỆN ngăn cản: sức khoẻ, ngoại cảnh). Đau chân là điều kiện cản trở." },
+        { text: "我脚疼,不要跑。", correct: 0, explain: "Sai — 不要 = đừng / không muốn, sai sắc thái (chủ ngữ vẫn muốn chạy nhưng không thể)." },
+        { text: "我脚疼,不应该跑。", correct: 0, explain: "Sai về sắc thái — 不应该 = không nên (lời khuyên), không diễn đạt 'không thể'." }
+      ]
+    },
+    {
+      id: "g03-4", group: 3, topic: "会 vs 能 (trẻ em)",
+      stem: "&quot;Em bé chưa <span class=\"blank\"></span> nói&quot; — chọn từ:",
+      options: [
+        { text: "会", correct: 1, explain: "Đúng — 还不会说话 = 'chưa biết nói'. Nói là KỸ NĂNG học được → dùng 会. 不能说话 lại có nghĩa 'bị câm/không nói được do bệnh'." },
+        { text: "能", correct: 0, explain: "Sai sắc thái — 不能说话 nghe như 'không thể nói (do bệnh, bị câm)'. Em bé chưa học chứ không phải bị bệnh." },
+        { text: "可以", correct: 0, explain: "Sai — 不可以说话 = 'không được phép nói', dùng cho lệnh cấm, không phù hợp." },
+        { text: "要", correct: 0, explain: "Sai — 要 = muốn / phải, không liên quan đến kỹ năng." }
+      ]
+    },
+    {
+      id: "g03-5", group: 3, topic: "可以 (xin phép)",
+      stem: "Trong cửa hàng: &quot;Tôi có thể thử không?&quot; — dịch tự nhiên nhất:",
+      options: [
+        { text: "我会试试吗?", correct: 0, explain: "Sai — 会 không dùng để xin phép. Câu này nghe như hỏi 'tôi có biết thử không?'." },
+        { text: "我可以试试吗?", correct: 1, explain: "Đúng — 可以 là từ XIN PHÉP lịch sự nhất trong tiếng Trung. Dùng phổ biến ở cửa hàng, công sở." },
+        { text: "我能试试吗?", correct: 0, explain: "Tạm chấp nhận nhưng không tối ưu — 能 thiên về khả năng/điều kiện. 可以 lịch sự và phổ biến hơn cho xin phép." },
+        { text: "我应该试试吗?", correct: 0, explain: "Sai — 应该 = nên (lời khuyên), không phải xin phép." }
+      ]
+    },
+
+    // ----------- Nhóm 04: Phó từ -----------
+    {
+      id: "g04-1", group: 4, topic: "也 vị trí",
+      stem: "&quot;Tôi cũng thích uống cà phê&quot; — dịch ĐÚNG:",
+      options: [
+        { text: "我也喜欢喝咖啡。", correct: 1, explain: "Đúng — 也 đứng TRƯỚC động từ chính: 主 + 也 + V. Đây là quy tắc cứng của phó từ tiếng Trung." },
+        { text: "我喜欢也喝咖啡。", correct: 0, explain: "Sai — 也 không chèn giữa V và bổ ngữ/V phụ." },
+        { text: "也我喜欢喝咖啡。", correct: 0, explain: "Sai — 也 không đứng đầu câu, phải sau chủ ngữ." },
+        { text: "我喜欢喝也咖啡。", correct: 0, explain: "Sai — 也 không đứng trước tân ngữ." }
+      ]
+    },
+    {
+      id: "g04-2", group: 4, topic: "都 vị trí",
+      stem: "&quot;Bạn bè tôi đều là người Việt&quot; — dịch ĐÚNG:",
+      options: [
+        { text: "我朋友都是越南人。", correct: 1, explain: "Đúng — 都 đứng TRƯỚC V, và 都 luôn theo SAU đối tượng được tổng hợp (我朋友). Trật tự: 主 + 都 + V." },
+        { text: "我都朋友是越南人。", correct: 0, explain: "Sai — 都 chèn giữa 主 và 宾 không đúng." },
+        { text: "都我朋友是越南人。", correct: 0, explain: "Sai — 都 không đứng đầu câu." },
+        { text: "我朋友是都越南人。", correct: 0, explain: "Sai — 都 không đứng giữa 是 và tân ngữ." }
+      ]
+    },
+    {
+      id: "g04-3", group: 4, topic: "就 vs 才",
+      stem: "&quot;Tôi 8 giờ <span class=\"blank\"></span> đến rồi&quot; (ý: sớm, đến sớm hơn dự kiến):",
+      options: [
+        { text: "就", correct: 1, explain: "Đúng — 就 = 'đã, ngay lập tức' (sớm hơn dự đoán). 8点就到了 = 8 giờ đã đến rồi (sớm). Có 了 cuối câu." },
+        { text: "才", correct: 0, explain: "Sai — 才 mang sắc thái 'đến giờ mới' (muộn hơn dự kiến). 8点才到 = '8 giờ mới đến' (muộn). Ngược nghĩa với câu hỏi." },
+        { text: "再", correct: 0, explain: "Sai — 再 = lại (chỉ hành động tương lai lặp)." },
+        { text: "又", correct: 0, explain: "Sai — 又 = lại (đã lặp trong quá khứ)." }
+      ]
+    },
+    {
+      id: "g04-4", group: 4, topic: "又 vs 再",
+      stem: "Hành động đã lặp lại trong QUÁ KHỨ, dùng phó từ nào?",
+      options: [
+        { text: "又", correct: 1, explain: "Đúng — 又 cho hành động ĐÃ lặp lại (quá khứ). Ví dụ: 他昨天来了,今天又来了 = hôm qua đến rồi, hôm nay LẠI đến." },
+        { text: "再", correct: 0, explain: "Sai — 再 cho hành động SẼ lặp lại (tương lai/dự định). 明天再来 = mai sẽ đến nữa." },
+        { text: "也", correct: 0, explain: "Sai — 也 = cũng (so sánh đối tượng khác), không phải lặp." },
+        { text: "还", correct: 0, explain: "Sai — 还 = vẫn / còn (tiếp diễn), không phải 'lại lặp'." }
+      ]
+    },
+    {
+      id: "g04-5", group: 4, topic: "有点儿 vs 一点儿",
+      stem: "&quot;Hơi đắt&quot; (mang sắc thái không hài lòng, chê):",
+      options: [
+        { text: "一点儿贵", correct: 0, explain: "Sai cấu trúc — 一点儿 đứng trước tính từ không phải dạng chuẩn. Cần đổi vị trí thành 贵一点儿 (nghĩa khác: 'đắt hơn một chút' — so sánh)." },
+        { text: "贵一点儿", correct: 0, explain: "Đúng cấu trúc nhưng SAI sắc thái — 贵一点儿 = 'đắt hơn một chút' (so sánh hai vật), không phải than phiền." },
+        { text: "有点儿贵", correct: 1, explain: "Đúng — 有点儿 + Adj đặt TRƯỚC tính từ, mang sắc thái TIÊU CỰC (chê, không hài lòng). Câu này nghĩa 'hơi đắt' (chê)." },
+        { text: "贵有点儿", correct: 0, explain: "Sai vị trí — 有点儿 luôn đứng TRƯỚC tính từ, không đứng sau." }
+      ]
+    },
+
+    // ----------- Nhóm 05: Trợ từ 了/过/着 -----------
+    {
+      id: "g05-1", group: 5, topic: "过 (kinh nghiệm)",
+      stem: "&quot;我吃<span class=\"cn\">过</span>北京烤鸭&quot; — 过 ở đây mang nghĩa gì?",
+      options: [
+        { text: "Hành động đã hoàn thành", correct: 0, explain: "Sai — hoàn thành là 了 (吃了 = đã ăn xong). 过 sắc thái khác." },
+        { text: "Từng có kinh nghiệm trong quá khứ", correct: 1, explain: "Đúng — V + 过 = 'đã từng' (có kinh nghiệm trong quá khứ). 吃过北京烤鸭 = 'đã từng ăn vịt quay Bắc Kinh'." },
+        { text: "Đang xảy ra", correct: 0, explain: "Sai — đang xảy ra là 正在 V (+呢) hoặc V+着, không phải 过." },
+        { text: "Sắp xảy ra", correct: 0, explain: "Sai — sắp là 快要…了 hoặc 就要…了, không phải 过." }
+      ]
+    },
+    {
+      id: "g05-2", group: 5, topic: "着 (trạng thái)",
+      stem: "&quot;门开<span class=\"cn\">着</span>&quot; — 着 diễn tả điều gì?",
+      options: [
+        { text: "Hành động đang xảy ra (động)", correct: 0, explain: "Sai một phần — 着 không phải 'đang làm' mà là 'trạng thái duy trì'. 门正在开 mới là 'cửa đang được mở (动)'." },
+        { text: "Trạng thái tồn tại (tĩnh, duy trì)", correct: 1, explain: "Đúng — V + 着 = trạng thái duy trì (TĨNH). 门开着 = 'cửa đang ở trạng thái mở' (không phải động tác mở)." },
+        { text: "Hành động đã hoàn thành xong", correct: 0, explain: "Sai — hoàn thành là 了. 着 không có ý hoàn thành." },
+        { text: "Hành động sắp xảy ra", correct: 0, explain: "Sai — 着 không bao giờ có nghĩa 'sắp'." }
+      ]
+    },
+    {
+      id: "g05-3", group: 5, topic: "了 động thái",
+      stem: "&quot;我学<span class=\"cn\">了</span>三年汉语&quot; — chữ 了 sau 学 là loại 了 nào?",
+      options: [
+        { text: "了 ngữ khí (cuối câu)", correct: 0, explain: "Sai — 了 ngữ khí đứng cuối câu (sau 宾 hoặc cuối hẳn). Ở đây 了 nằm GIỮA V và 宾, là 了 động thái." },
+        { text: "了 động thái (sau V, trước bổ ngữ/宾)", correct: 1, explain: "Đúng — 了 động thái đặt NGAY SAU V, chỉ hành động ĐÃ THỰC HIỆN. 学了三年汉语 = 'đã học 3 năm tiếng Trung'." },
+        { text: "了 hoàn thành tuyệt đối", correct: 0, explain: "Sai — không có khái niệm '了 hoàn thành tuyệt đối'. Chỉ có 了 ngữ khí và 了 động thái." },
+        { text: "Cả A và B", correct: 0, explain: "Sai — câu chỉ có 1 chữ 了 sau V, chỉ là 1 loại. (Câu '学了三年汉语了' mới có cả 2 loại.)" }
+      ]
+    },
+    {
+      id: "g05-4", group: 5, topic: "phủ định 过",
+      stem: "&quot;Tôi chưa từng đi Trung Quốc&quot; — dịch ĐÚNG:",
+      options: [
+        { text: "我没去中国。", correct: 0, explain: "Sai — chỉ có 没 mà không có 过 thì nghĩa 'không đi (lần này)', không phải 'chưa từng'." },
+        { text: "我没去过中国。", correct: 1, explain: "Đúng — phủ định 过 dùng 没…过 (không phải 不…过). 没去过 = 'chưa từng đi'." },
+        { text: "我不去过中国。", correct: 0, explain: "Sai — 过 luôn dùng với 没, KHÔNG dùng với 不." },
+        { text: "我不去中国了。", correct: 0, explain: "Sai — 不…了 = 'không … nữa' (đã từng đi nhưng giờ không đi nữa), trái nghĩa với 'chưa từng'." }
+      ]
+    },
+    {
+      id: "g05-5", group: 5, topic: "着 không kết hợp 了",
+      stem: "Câu nào SAI?",
+      options: [
+        { text: "老师在教室里坐着。", correct: 0, explain: "Đây là câu ĐÚNG — 坐着 = đang trong trạng thái ngồi. Không phải đáp án." },
+        { text: "老师在教室里坐着看书。", correct: 0, explain: "Đây là câu ĐÚNG — V1+着 V2 = vừa V1 vừa V2 (V1 là trạng thái nền)." },
+        { text: "老师坐着了。", correct: 1, explain: "ĐÚNG (là câu sai)! — 着 (trạng thái duy trì) và 了 (điểm hoàn thành) sắc thái xung đột, KHÔNG đứng cạnh nhau. Câu này phải sửa: 老师坐下了 hoặc 老师坐着." },
+        { text: "他笑着说。", correct: 0, explain: "Đây là câu ĐÚNG — V1+着 V2 = 'vừa cười vừa nói'." }
+      ]
+    },
+
+    // ----------- Nhóm 06: Định ngữ & Đối tượng -----------
+    {
+      id: "g06-1", group: 6, topic: "thứ tự định ngữ",
+      stem: "Thứ tự ĐÚNG cho &quot;ba cuốn sách tiếng Trung mới của tôi&quot;:",
+      options: [
+        { text: "我的三本新的中文书", correct: 1, explain: "Đúng — thứ tự định ngữ tiếng Trung: ĐẠI TỪ SỞ HỮU → SỐ/LƯỢNG → TÍNH TỪ → LOẠI/CHẤT LIỆU → DT chính. Quy tắc 'mềm đến cứng'." },
+        { text: "三本新的我的中文书", correct: 0, explain: "Sai — đại từ sở hữu (我的) phải đứng ĐẦU dãy định ngữ, không phải giữa." },
+        { text: "新的三本我的中文书", correct: 0, explain: "Sai — tính từ (新的) không đứng trước số lượng." },
+        { text: "我的中文三本新书", correct: 0, explain: "Sai — số lượng phải đứng trước tính từ trong dãy." }
+      ]
+    },
+    {
+      id: "g06-2", group: 6, topic: "对 (giới từ)",
+      stem: "&quot;<span class=\"cn\">对</span>孩子很好&quot; — chữ 对 ở đây có chức năng gì?",
+      options: [
+        { text: "Giới từ chỉ đối tượng", correct: 1, explain: "Đúng — 对 (giới từ) dẫn ra đối tượng tác động. 对孩子很好 = 'tốt VỚI/ĐỐI VỚI trẻ con'." },
+        { text: "Động từ", correct: 0, explain: "Sai — 对 có thể là động từ trong nghĩa 'đối/hướng/đúng' (对了 = đúng rồi), nhưng ở câu này nó là giới từ." },
+        { text: "Tính từ", correct: 0, explain: "Sai — 对 không phải tính từ trong câu này." },
+        { text: "Liên từ", correct: 0, explain: "Sai — 对 không nối hai vế câu, không phải liên từ." }
+      ]
+    },
+    {
+      id: "g06-3", group: 6, topic: "跟 (cùng với)",
+      stem: "&quot;Tôi cùng bạn đi chợ&quot; — dịch ĐÚNG nhất:",
+      options: [
+        { text: "我跟你一起去市场。", correct: 1, explain: "Đúng — 跟 = 'cùng với / với (đi cùng)'. Thường đi với 一起. 跟你一起 = cùng với bạn." },
+        { text: "我对你一起去市场。", correct: 0, explain: "Sai — 对 = 'đối với', không có nghĩa 'cùng đi'." },
+        { text: "我向你一起去市场。", correct: 0, explain: "Sai — 向 = 'hướng về', không có nghĩa 'cùng'." },
+        { text: "我从你一起去市场。", correct: 0, explain: "Sai — 从 = 'từ (xuất phát điểm)', không có nghĩa 'cùng'." }
+      ]
+    },
+    {
+      id: "g06-4", group: 6, topic: "给 (cho ai)",
+      stem: "Điền giới từ: &quot;我<span class=\"blank\"></span>妈妈送礼物&quot; (Tôi tặng quà CHO mẹ).",
+      options: [
+        { text: "给", correct: 1, explain: "Đúng — 给 dẫn ra ĐỐI TƯỢNG NHẬN. 给妈妈送礼物 = 'tặng quà CHO mẹ'." },
+        { text: "对", correct: 0, explain: "Sai — 对 = 'đối với', không dùng cho ý 'cho ai nhận'." },
+        { text: "跟", correct: 0, explain: "Sai — 跟妈妈送礼物 không tự nhiên. 跟 thường là 'cùng với'." },
+        { text: "从", correct: 0, explain: "Sai — 从 = 'từ', ngược nghĩa." }
+      ]
+    },
+    {
+      id: "g06-5", group: 6, topic: "定语 + 的",
+      stem: "Câu nào ĐÚNG (định ngữ là cụm动宾 bắt buộc 的)?",
+      options: [
+        { text: "这是昨天买书。", correct: 0, explain: "Sai — '昨天买' là cụm V (động bin) làm định ngữ, BẮT BUỘC có 的." },
+        { text: "这是昨天买的书。", correct: 1, explain: "Đúng — định ngữ là cụm động bin '昨天买' bắt buộc thêm 的: '昨天买的书' = 'sách (mà tôi) mua hôm qua'." },
+        { text: "这是昨天的买书。", correct: 0, explain: "Sai — 的 đặt sai chỗ, '昨天的' bổ nghĩa cho '买' không hợp lý." },
+        { text: "这是昨天买书的。", correct: 0, explain: "Sai — 的 ở cuối làm danh từ hoá '昨天买书的' = 'người mua sách hôm qua', không phải 'sách'." }
+      ]
+    },
+
+    // ----------- Nhóm 07: Bổ ngữ -----------
+    {
+      id: "g07-1", group: 7, topic: "bổ ngữ kết quả",
+      stem: "&quot;听<span class=\"cn\">懂</span>&quot; — 懂 là loại bổ ngữ gì?",
+      options: [
+        { text: "Bổ ngữ kết quả (结果补语)", correct: 1, explain: "Đúng — 懂 (hiểu) là KẾT QUẢ của 听 (nghe). V + bổ ngữ kết quả (听懂/看完/写好) chỉ kết quả đạt được sau V." },
+        { text: "Bổ ngữ xu hướng (趋向补语)", correct: 0, explain: "Sai — bổ ngữ xu hướng là 来/去/上/下/进/出/起来/下去… 懂 không thuộc nhóm này." },
+        { text: "Bổ ngữ khả năng (可能补语)", correct: 0, explain: "Sai — bổ ngữ khả năng phải có 得/不 ở giữa (听得懂 = nghe được; 听不懂 = không nghe được)." },
+        { text: "Bổ ngữ mức độ (程度补语)", correct: 0, explain: "Sai — bổ ngữ mức độ là 极了/死了/坏了 đứng sau Adj (好极了, 累死了)." }
+      ]
+    },
+    {
+      id: "g07-2", group: 7, topic: "bổ ngữ thời lượng",
+      stem: "&quot;我学了<span class=\"cn\">两个小时</span>&quot; — 两个小时 là loại bổ ngữ gì?",
+      options: [
+        { text: "Bổ ngữ kết quả", correct: 0, explain: "Sai — bổ ngữ kết quả chỉ kết quả (听懂, 写完), không chỉ thời gian." },
+        { text: "Bổ ngữ thời lượng (时量补语)", correct: 1, explain: "Đúng — 两个小时 (2 tiếng) chỉ THỜI GIAN KÉO DÀI của hành động → bổ ngữ thời lượng. Đặt sau V (+了)." },
+        { text: "Bổ ngữ mức độ", correct: 0, explain: "Sai — bổ ngữ mức độ dùng cho Adj (好极了), không phải V." },
+        { text: "Bổ ngữ trạng thái", correct: 0, explain: "Sai — bổ ngữ trạng thái có 得 (跑得快, 笑得开心), không dùng với cụm thời gian thuần." }
+      ]
+    },
+    {
+      id: "g07-3", group: 7, topic: "趋向补语 过来",
+      stem: "&quot;他跑<span class=\"cn\">过来</span>了&quot; — 过来 nghĩa là gì?",
+      options: [
+        { text: "Đi xuống", correct: 0, explain: "Sai — đi xuống là 下来 / 下去, không phải 过来." },
+        { text: "Qua đây, lại gần người nói", correct: 1, explain: "Đúng — 过来 = 'qua đây / lại gần' (người nói đứng ở vị trí đích). 跑过来 = chạy lại gần đây." },
+        { text: "Đi xa khỏi người nói", correct: 0, explain: "Sai — đi xa người nói là 过去. 跑过去 = chạy ra xa kia." },
+        { text: "Đi lên", correct: 0, explain: "Sai — đi lên là 上来 / 上去." }
+      ]
+    },
+    {
+      id: "g07-4", group: 7, topic: "可能补语 phủ định",
+      stem: "&quot;我吃<span class=\"cn\">不下</span>&quot; — 不下 là loại bổ ngữ gì?",
+      options: [
+        { text: "Bổ ngữ khả năng (phủ định)", correct: 1, explain: "Đúng — V + 不 + 下/动/完… = bổ ngữ KHẢ NĂNG phủ định. 吃不下 = 'ăn không nổi' (không có khả năng). Dạng khẳng định: 吃得下 = 'ăn nổi'." },
+        { text: "Bổ ngữ xu hướng", correct: 0, explain: "Sai — bổ ngữ xu hướng đơn 下 (下来/下去) không có 不 chen vào." },
+        { text: "Bổ ngữ kết quả", correct: 0, explain: "Sai — bổ ngữ kết quả không chèn 不 vào giữa V và bổ ngữ." },
+        { text: "Bổ ngữ trạng thái", correct: 0, explain: "Sai — bổ ngữ trạng thái có 得 và là cụm Adj/V." }
+      ]
+    },
+    {
+      id: "g07-5", group: 7, topic: "bổ ngữ trạng thái",
+      stem: "&quot;他笑<span class=\"cn\">得很开心</span>&quot; — đâu là bổ ngữ trạng thái?",
+      options: [
+        { text: "笑", correct: 0, explain: "Sai — 笑 là vị ngữ chính (V), không phải bổ ngữ." },
+        { text: "很开心", correct: 1, explain: "Đúng — 得 + cụm Adj/V mô tả MỨC ĐỘ của hành động = bổ ngữ trạng thái. Cấu trúc: V + 得 + 状态补语." },
+        { text: "得", correct: 0, explain: "Sai — 得 là TRỢ TỪ kết nối V với bổ ngữ trạng thái, không phải bổ ngữ." },
+        { text: "他", correct: 0, explain: "Sai — 他 là chủ ngữ." }
+      ]
+    },
+
+    // ----------- Nhóm 08: Câu đặc biệt -----------
+    {
+      id: "g08-1", group: 8, topic: "把字句",
+      stem: "&quot;我<span class=\"cn\">把</span>书放在桌子上了&quot; — câu 把 nhấn mạnh điều gì?",
+      options: [
+        { text: "Người làm (chủ ngữ)", correct: 0, explain: "Sai — câu 把 không nhấn mạnh chủ ngữ. Chủ ngữ vẫn ở vị trí thường." },
+        { text: "Tân ngữ + xử lý lên tân ngữ", correct: 1, explain: "Đúng — câu 把 (主 + 把 + O + V + 其他) đưa tân ngữ ra TRƯỚC V, nhấn mạnh 'đối tượng bị xử lý + kết quả/hướng/cách'. Sau V luôn phải có thành phần thêm." },
+        { text: "Thời gian", correct: 0, explain: "Sai — không liên quan tới thời gian." },
+        { text: "Địa điểm", correct: 0, explain: "Sai — địa điểm chỉ là chi tiết phụ ở 桌子上." }
+      ]
+    },
+    {
+      id: "g08-2", group: 8, topic: "被字句",
+      stem: "&quot;我的电脑<span class=\"cn\">被</span>弟弟弄坏了&quot; — câu 被 chỉ điều gì?",
+      options: [
+        { text: "Câu bị động", correct: 1, explain: "Đúng — 被 = 'bị'. Cấu trúc: O(người bị) + 被 + S(người làm) + V + 其他. Câu này: 'máy tính của tôi bị em (làm) hỏng'." },
+        { text: "Câu so sánh", correct: 0, explain: "Sai — câu so sánh dùng 比 (A 比 B + Adj)." },
+        { text: "Câu sai khiến", correct: 0, explain: "Sai — câu sai khiến (兼语) dùng 让/叫/请/使 (我让他来 = tôi bảo anh ấy đến)." },
+        { text: "Câu tồn tại", correct: 0, explain: "Sai — câu tồn tại là 存现句 (处所+V+数量+N)." }
+      ]
+    },
+    {
+      id: "g08-3", group: 8, topic: "比字句 chênh lệch",
+      stem: "&quot;他比我高<span class=\"cn\">三公分</span>&quot; — 三公分 là gì sau Adj?",
+      options: [
+        { text: "Bổ ngữ kết quả", correct: 0, explain: "Sai — kết quả là 听懂/看完, không phải số chênh lệch." },
+        { text: "Bổ ngữ chênh lệch (差量)", correct: 1, explain: "Đúng — câu 比: A 比 B + Adj + chênh lệch. 三公分 chỉ rõ 'cao hơn 3 cm'. Có thể là số cụ thể (三公分) hoặc mơ hồ (一点儿/多了/得多)." },
+        { text: "Bổ ngữ trạng thái", correct: 0, explain: "Sai — bổ ngữ trạng thái phải có 得." },
+        { text: "Bổ ngữ thời lượng", correct: 0, explain: "Sai — 三公分 không phải thời gian." }
+      ]
+    },
+    {
+      id: "g08-4", group: 8, topic: "存现句",
+      stem: "&quot;桌子上有一本书&quot; — đây là loại câu gì?",
+      options: [
+        { text: "Câu khẳng định thông thường", correct: 0, explain: "Sai — câu thông thường chủ ngữ là người/vật, không phải nơi chốn." },
+        { text: "Câu tồn hiện (存现句)", correct: 1, explain: "Đúng — 存现句: 处所 + V(+了/着) + 数量 + N. NƠI CHỐN đứng ĐẦU (không cần 在). 'Trên bàn có một cuốn sách'." },
+        { text: "Câu so sánh", correct: 0, explain: "Sai — không có 比 hay 跟…一样." },
+        { text: "Câu nhấn mạnh", correct: 0, explain: "Sai — nhấn mạnh là câu 是…的." }
+      ]
+    },
+    {
+      id: "g08-5", group: 8, topic: "是…的",
+      stem: "&quot;我<span class=\"cn\">是</span>昨天来<span class=\"cn\">的</span>&quot; — câu 是…的 nhấn mạnh gì?",
+      options: [
+        { text: "Người thực hiện", correct: 0, explain: "Một phần đúng nhưng chưa đầy đủ — 是…的 có thể nhấn mạnh chủ ngữ nhưng cấu trúc này không chỉ giới hạn ở đó." },
+        { text: "Thời điểm/nơi/cách thức của hành động ĐÃ XẢY RA", correct: 1, explain: "Đúng — 是…的 dùng cho hành động ĐÃ XẢY RA (đã biết), nhấn mạnh: KHI NÀO/Ở ĐÂU/CÁCH NÀO/AI/CÙNG AI. 我是昨天来的 = nhấn mạnh 'hôm qua' (khi nào đến)." },
+        { text: "Tân ngữ", correct: 0, explain: "Sai — câu này không có tân ngữ rõ ràng." },
+        { text: "Phạm vi", correct: 0, explain: "Sai — phạm vi không phải mục đích của 是…的." }
+      ]
+    },
+
+    // ----------- Nhóm 09: Cấu trúc cố định -----------
+    {
+      id: "g09-1", group: 9, topic: "一…就…",
+      stem: "&quot;Vừa nhìn thấy mẹ, em bé liền cười&quot; — chọn cấu trúc:",
+      options: [
+        { text: "一…就… (孩子一看见妈妈就笑了)", correct: 1, explain: "Đúng — 一 A 就 B = 'vừa A liền B'. Diễn tả NHÂN-QUẢ NHANH hoặc tiếp nối ngay lập tức của 2 hành động." },
+        { text: "一边…一边…", correct: 0, explain: "Sai — 一边…一边… là 2 hành động ĐỒNG THỜI, không phải nối tiếp." },
+        { text: "越来越…", correct: 0, explain: "Sai — 越来越 là biến đổi theo thời gian (càng ngày càng)." },
+        { text: "不但…而且…", correct: 0, explain: "Sai — đó là cấu trúc tăng tiến/bổ sung." }
+      ]
+    },
+    {
+      id: "g09-2", group: 9, topic: "一边…一边…",
+      stem: "&quot;Tôi vừa nghe nhạc vừa làm bài tập&quot; — chọn cấu trúc:",
+      options: [
+        { text: "一…就…", correct: 0, explain: "Sai — 一就 là NỐI TIẾP nhanh, không phải đồng thời." },
+        { text: "一边…一边…", correct: 1, explain: "Đúng — 一边 V1 一边 V2 = '(làm) đồng thời V1 và V2'. 一边听音乐一边做作业 = vừa nghe nhạc vừa làm bài." },
+        { text: "越来越…", correct: 0, explain: "Sai — 越来越 không liên quan tới đồng thời." },
+        { text: "谁…都…", correct: 0, explain: "Sai — 谁都 là phổ quát (ai cũng)." }
+      ]
+    },
+    {
+      id: "g09-3", group: 9, topic: "越来越…",
+      stem: "&quot;Thời tiết càng ngày càng nóng&quot; — chọn cấu trúc:",
+      options: [
+        { text: "越来越…", correct: 1, explain: "Đúng — 越来越 + Adj/V = 'ngày càng …'. Diễn tả MỘT đối tượng biến đổi theo thời gian. 天气越来越热 = thời tiết ngày càng nóng." },
+        { text: "越…越…", correct: 0, explain: "Sai — 越 A 越 B cần HAI hành động/trạng thái tương quan. Câu này chỉ có 1 biến đổi (theo thời gian)." },
+        { text: "一…就…", correct: 0, explain: "Sai — 一就 là nối tiếp 2 sự kiện cụ thể." },
+        { text: "不但…而且…", correct: 0, explain: "Sai — đó là tăng tiến bổ sung 2 ý." }
+      ]
+    },
+    {
+      id: "g09-4", group: 9, topic: "越…越…",
+      stem: "&quot;Càng ăn càng ngon&quot; — chọn cấu trúc:",
+      options: [
+        { text: "越来越…", correct: 0, explain: "Sai — 越来越好吃 nghĩa là 'càng ngày càng ngon' (biến đổi theo thời gian), không phải 'càng ăn càng ngon' (biến đổi tương quan)." },
+        { text: "越…越… (越吃越好吃)", correct: 1, explain: "Đúng — 越 A 越 B = 'càng A càng B'. A và B là 2 hành động/trạng thái KHÁC NHAU, có quan hệ tương quan tỉ lệ." },
+        { text: "一…就…", correct: 0, explain: "Sai — 一就 là nối tiếp sự kiện." },
+        { text: "不但…而且…", correct: 0, explain: "Sai — là tăng tiến, không phải tương quan." }
+      ]
+    },
+    {
+      id: "g09-5", group: 9, topic: "除了…(以外)",
+      stem: "&quot;Ngoài tiếng Anh, tôi còn biết tiếng Trung&quot; — chọn cấu trúc:",
+      options: [
+        { text: "除了…(以外),还/也…", correct: 1, explain: "Đúng — 除了 A (以外), 还/也 + B = 'ngoài A, CÒN B nữa' (bổ sung). 除了英语以外, 我还会汉语. (Lưu ý: 除了 còn có nghĩa 'loại trừ', phụ thuộc vào 还/都.)" },
+        { text: "无论…都…", correct: 0, explain: "Sai — 无论…都 = 'dù … cũng' (phổ quát theo điều kiện)." },
+        { text: "不但…而且…", correct: 0, explain: "Tương đối gần nhưng — 不但…而且 nhấn mạnh tăng tiến bổ sung; câu này dùng 除了…还 tự nhiên hơn vì có 'ngoài'." },
+        { text: "谁…都…", correct: 0, explain: "Sai — 谁都 = ai cũng (phổ quát)." }
+      ]
+    },
+
+    // ----------- Nhóm 10: Bốn loại câu hỏi -----------
+    {
+      id: "g10-1", group: 10, topic: "是非疑问句 (吗)",
+      stem: "&quot;你是学生<span class=\"blank\"></span>?&quot; — điền trợ từ:",
+      options: [
+        { text: "吗", correct: 1, explain: "Đúng — câu hỏi có/không (是非疑问句) cơ bản nhất: trần thuật + 吗. 你是学生吗? = 'Bạn là học sinh không?'." },
+        { text: "吧", correct: 0, explain: "Sai sắc thái — 吧 là phỏng đoán/xin xác nhận, không phải hỏi trung tính. 你是学生吧? nghe như 'chắc là học sinh nhỉ?'." },
+        { text: "呢", correct: 0, explain: "Sai — 呢 không tự đứng, phải có ngữ cảnh trước (老师好,你呢?)." },
+        { text: "了", correct: 0, explain: "Sai — 了 là trợ từ thay đổi/hoàn thành, không phải nghi vấn." }
+      ]
+    },
+    {
+      id: "g10-2", group: 10, topic: "特指疑问句",
+      stem: "&quot;你叫什么名字?&quot; — đây là loại câu hỏi nào?",
+      options: [
+        { text: "是非疑问句", correct: 0, explain: "Sai — 是非 dùng 吗, không có nghi vấn từ. Câu này dùng 什么 → đặc chỉ." },
+        { text: "特指疑问句", correct: 1, explain: "Đúng — dùng NGHI VẤN TỪ (谁/什么/哪儿/什么时候/怎么/为什么/多少/几) thay vào vị trí muốn hỏi = 特指 (đặc chỉ). Không thêm 吗." },
+        { text: "正反疑问句", correct: 0, explain: "Sai — 正反 là dạng V不V (你叫不叫?)." },
+        { text: "选择疑问句", correct: 0, explain: "Sai — 选择 là dạng A 还是 B." }
+      ]
+    },
+    {
+      id: "g10-3", group: 10, topic: "正反疑问句",
+      stem: "&quot;你<span class=\"cn\">去不去</span>?&quot; — đây là loại câu hỏi nào?",
+      options: [
+        { text: "是非疑问句", correct: 0, explain: "Sai — 是非 dùng 吗 ở cuối. Câu này dùng dạng V不V, KHÔNG đi với 吗." },
+        { text: "特指疑问句", correct: 0, explain: "Sai — 特指 cần có nghi vấn từ." },
+        { text: "正反疑问句", correct: 1, explain: "Đúng — dạng V不V (hoặc 是不是/有没有) = 正反 (chính phản). Khẩu ngữ, trực tiếp. CẤM 吗 ở cuối." },
+        { text: "选择疑问句", correct: 0, explain: "Sai — 选择 cần 还是 (A 还是 B)." }
+      ]
+    },
+    {
+      id: "g10-4", group: 10, topic: "选择疑问句",
+      stem: "&quot;你喝咖啡<span class=\"cn\">还是</span>喝茶?&quot; — đây là loại câu hỏi nào?",
+      options: [
+        { text: "是非疑问句", correct: 0, explain: "Sai — 是非 dùng 吗, không phải 还是." },
+        { text: "特指疑问句", correct: 0, explain: "Sai — không có nghi vấn từ." },
+        { text: "正反疑问句", correct: 0, explain: "Sai — 正反 cần V不V hoặc 是不是." },
+        { text: "选择疑问句", correct: 1, explain: "Đúng — A 还是 B (?) = 选择 (lựa chọn). 还是 chỉ dùng TRONG câu hỏi; câu khẳng định 'A hoặc B' phải dùng 或者." }
+      ]
+    },
+    {
+      id: "g10-5", group: 10, topic: "多少 vs 几",
+      stem: "&quot;Bao nhiêu sinh viên đến lớp?&quot; (dự đoán hơn 10 người) — chọn nghi vấn từ:",
+      options: [
+        { text: "几", correct: 0, explain: "Sai — 几 dùng cho số NHỎ (<10) và BẮT BUỘC đi với lượng từ (几个/几点/几岁). Lớp học thường > 10 sinh viên, nên dùng 多少." },
+        { text: "多少", correct: 1, explain: "Đúng — 多少 cho số LỚN (≥10) hoặc khi không đoán được số lượng. Lượng từ là TUỲ CHỌN với 多少 (多少学生 hoặc 多少个学生 đều được). 多少钱 luôn dùng 多少." },
+        { text: "多", correct: 0, explain: "Sai — 多 mình nó không phải nghi vấn từ. Phải kết hợp: 多大/多高/多少." },
+        { text: "怎么", correct: 0, explain: "Sai — 怎么 = 'thế nào, làm sao' (cách thức), không hỏi số lượng." }
+      ]
+    }
+  ];
+
+  // ============================================================
+  // 2. Mapping nhóm → file (để fetch quiz có sẵn)
+  // ============================================================
+  var FILE_MAP = [
+    { group: 1,  file: "01-thoi-gian-khong-gian.html" },
+    { group: 2,  file: "02-phan-loai-tu-co-ban.html" },
+    { group: 3,  file: "03-dong-tu-nang-nguyen.html" },
+    { group: 4,  file: "04-pho-tu.html" },
+    { group: 5,  file: "05-tro-tu.html" },
+    { group: 6,  file: "06-dinh-ngu-trang-ngu.html" },
+    { group: 7,  file: "07-bo-ngu.html" },
+    { group: 8,  file: "08-cau-dac-biet.html" },
+    { group: 9,  file: "09-cau-truc-co-dinh.html" },
+    { group: 10, file: "10-cau-hoi.html" }
+  ];
+
+  // ============================================================
+  // 3. State
+  // ============================================================
+  var state = {
+    fetchedBank: [],            // quizzes scraped from 10 files
+    fetchTried: false,
+    fetchAvailable: false,
+    selectedSize: 30,
+    selectedGroups: new Set(["all"]),
+    currentQuiz: [],            // current generated set
+    answers: {},                // { qid: { picked, correct } }
+  };
+
+  // ============================================================
+  // 4. Helpers
+  // ============================================================
+  function $(sel, ctx) { return (ctx || document).querySelector(sel); }
+  function $$(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
+  function escHtml(s) {
+    return (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  // ============================================================
+  // 5. Fetch quizzes from 10 files (with fallback)
+  // ============================================================
+  function fetchQuizzesFromFiles(cb) {
+    if (state.fetchTried) { cb(); return; }
+    state.fetchTried = true;
+
+    // file:// thường chặn fetch → bỏ qua
+    if (location.protocol === "file:") {
+      setLoadStatus("Offline mode · dùng 50 câu embed", "warn");
+      cb();
+      return;
+    }
+
+    var remaining = FILE_MAP.length;
+    var collected = [];
+    FILE_MAP.forEach(function (m) {
+      fetch(m.file).then(function (r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.text();
+      }).then(function (html) {
+        var doc = new DOMParser().parseFromString(html, "text/html");
+        var quizzes = doc.querySelectorAll(".quiz");
+        var idx = 0;
+        quizzes.forEach(function (q) {
+          var qEl = q.querySelector(".q");
+          var opts = q.querySelectorAll(".opt");
+          if (!qEl || opts.length < 2) return;
+          var options = [];
+          opts.forEach(function (o) {
+            options.push({
+              text: o.innerHTML.trim(),
+              correct: o.dataset.correct === "1" ? 1 : 0,
+              explain: o.dataset.explain || ""
+            });
+          });
+          // skip if no correct or no explain on at least one option
+          var hasCorrect = options.some(function (x) { return x.correct === 1; });
+          if (!hasCorrect) return;
+          collected.push({
+            id: "f" + m.group + "-" + (++idx),
+            group: m.group,
+            topic: "Quiz từ bài " + (m.group < 10 ? "0" + m.group : m.group),
+            stem: qEl.innerHTML.trim(),
+            options: options,
+            __fromFile: true
+          });
+        });
+      }).catch(function (e) {
+        // silent fail per-file
+      }).finally(function () {
+        remaining--;
+        if (remaining === 0) {
+          state.fetchedBank = collected;
+          state.fetchAvailable = collected.length > 0;
+          if (collected.length > 0) {
+            setLoadStatus("✓ Đã gom " + collected.length + " quiz từ 10 bài", "ok");
+          } else {
+            setLoadStatus("Không fetch được file · dùng 50 câu embed", "warn");
+          }
+          cb();
+        }
+      });
+    });
+  }
+
+  function setLoadStatus(msg, cls) {
+    var el = $("#loadStatus");
+    el.textContent = msg;
+    el.className = "load-status" + (cls ? " " + cls : "");
+  }
+
+  // ============================================================
+  // 6. Generate quiz set
+  // ============================================================
+  function generateQuizSet() {
+    // 1. Pool = BANK + fetched (filter trùng theo stem)
+    var pool = BANK.slice();
+    if (state.fetchAvailable) {
+      var existingStems = new Set(pool.map(function (q) {
+        return q.stem.replace(/\s+/g, "");
+      }));
+      state.fetchedBank.forEach(function (q) {
+        var key = q.stem.replace(/\s+/g, "");
+        if (!existingStems.has(key)) {
+          pool.push(q);
+          existingStems.add(key);
+        }
+      });
+    }
+
+    // 2. Filter by group
+    if (!state.selectedGroups.has("all") && state.selectedGroups.size > 0) {
+      pool = pool.filter(function (q) {
+        return state.selectedGroups.has(String(q.group));
+      });
+    }
+
+    // 3. Shuffle and slice
+    pool = shuffle(pool);
+    var size = Math.min(state.selectedSize, pool.length);
+    return pool.slice(0, size);
+  }
+
+  // ============================================================
+  // 7. Render quiz cards
+  // ============================================================
+  function renderQuizSet(set) {
+    var area = $("#testArea");
+    area.innerHTML = "";
+    set.forEach(function (q, i) {
+      var card = document.createElement("div");
+      card.className = "quiz-card";
+      card.dataset.qid = q.id;
+      card.innerHTML =
+        '<div class="qhead">' +
+          '<span class="num">Câu ' + (i + 1) + '/' + set.length + '</span>' +
+          '<span class="tag">Nhóm ' + q.group + ' · ' + escHtml(q.topic) + '</span>' +
+        '</div>' +
+        '<div class="q">' + q.stem + '</div>' +
+        '<div class="opts">' +
+          q.options.map(function (o, oi) {
+            return '<span class="opt" data-correct="' + (o.correct ? 1 : 0) +
+                   '" data-oi="' + oi + '">' + o.text + '</span>';
+          }).join("") +
+        '</div>' +
+        '<div class="feedback"></div>';
+      area.appendChild(card);
+    });
+    bindQuizClicks();
+  }
+
+  function bindQuizClicks() {
+    $$(".quiz-card").forEach(function (card) {
+      var qid = card.dataset.qid;
+      var fb = card.querySelector(".feedback");
+      var opts = card.querySelectorAll(".opt");
+      opts.forEach(function (o) {
+        o.addEventListener("click", function () {
+          if (card.classList.contains("answered-ok") || card.classList.contains("answered-no")) return;
+          var correct = o.dataset.correct === "1";
+          var oi = parseInt(o.dataset.oi, 10);
+          var q = state.currentQuiz.find(function (x) { return x.id === qid; });
+          var explain = q && q.options[oi] ? q.options[oi].explain : "";
+          opts.forEach(function (x) { x.classList.add("disabled"); });
+          if (correct) {
+            o.classList.add("correct");
+            fb.textContent = explain || "Chính xác!";
+            fb.className = "feedback ok";
+            card.classList.add("answered-ok");
+          } else {
+            o.classList.add("wrong");
+            // highlight correct
+            opts.forEach(function (x) {
+              if (x.dataset.correct === "1") x.classList.add("correct");
+            });
+            fb.textContent = explain || "Chưa đúng. Đáp án đúng đã được tô xanh.";
+            fb.className = "feedback no";
+            card.classList.add("answered-no");
+          }
+          state.answers[qid] = { picked: oi, correct: correct };
+          updateProgress();
+        });
+      });
+    });
+  }
+
+  function updateProgress() {
+    var total = state.currentQuiz.length;
+    var done = Object.keys(state.answers).length;
+    var ok = 0, no = 0;
+    Object.keys(state.answers).forEach(function (k) {
+      if (state.answers[k].correct) ok++; else no++;
+    });
+    $("#statTotal").textContent = total;
+    $("#statDone").textContent = done;
+    $("#statOk").textContent = ok;
+    $("#statNo").textContent = no;
+    $("#barFill").style.width = (total > 0 ? (done / total * 100) : 0) + "%";
+
+    if (done === total && total > 0) {
+      // auto-show submit button (already shown but emphasize)
+      $("#submitBtn").classList.remove("hide");
+    }
+  }
+
+  // ============================================================
+  // 8. Result modal
+  // ============================================================
+  function showResult() {
+    var total = state.currentQuiz.length;
+    var ok = 0;
+    var groupStats = {};
+    state.currentQuiz.forEach(function (q) {
+      var a = state.answers[q.id];
+      if (!groupStats[q.group]) groupStats[q.group] = { ok: 0, total: 0 };
+      groupStats[q.group].total++;
+      if (a && a.correct) {
+        ok++;
+        groupStats[q.group].ok++;
+      }
+    });
+    var pct = total > 0 ? Math.round(ok / total * 100) : 0;
+    $("#scoreBig").textContent = ok + "/" + total;
+    $("#scorePct").textContent = pct + "% chính xác";
+
+    var verdict, vclass;
+    if (pct >= 90)      { verdict = "🏆 Xuất sắc! HSK 5+ trình độ"; vclass = "gold"; }
+    else if (pct >= 75) { verdict = "✨ Rất tốt — vững HSK 4"; vclass = "green"; }
+    else if (pct >= 50) { verdict = "📘 Khá ổn — cần ôn thêm phần sai"; vclass = "blue"; }
+    else                { verdict = "📚 Hãy ôn lại các bài liên quan"; vclass = "rose"; }
+    $("#scoreVerdict").textContent = verdict;
+    $("#scoreVerdict").className = "verdict " + vclass;
+
+    var groupNames = {
+      1: "01 · Thời gian/KG", 2: "02 · Phân loại từ", 3: "03 · 能/会",
+      4: "04 · Phó từ", 5: "05 · Trợ từ", 6: "06 · Định ngữ/Đối tượng",
+      7: "07 · Bổ ngữ", 8: "08 · Câu đặc biệt", 9: "09 · Cấu trúc cố định",
+      10: "10 · Câu hỏi"
+    };
+    var bd = $("#scoreBreakdown");
+    bd.innerHTML = "";
+    Object.keys(groupStats).sort(function (a, b) { return +a - +b; }).forEach(function (g) {
+      var s = groupStats[g];
+      var div = document.createElement("div");
+      div.innerHTML = "<span>" + (groupNames[g] || ("Nhóm " + g)) + "</span><span>" +
+                      s.ok + "/" + s.total + "</span>";
+      bd.appendChild(div);
+    });
+
+    $("#resultModal").classList.add("show");
+  }
+
+  function hideResult() {
+    $("#resultModal").classList.remove("show");
+  }
+
+  // ============================================================
+  // 9. Wire up settings panel
+  // ============================================================
+  function bindSettings() {
+    $$("#sizeChips .ontap-chip").forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        $$("#sizeChips .ontap-chip").forEach(function (c) { c.classList.remove("active"); });
+        chip.classList.add("active");
+        state.selectedSize = parseInt(chip.dataset.size, 10);
+      });
+    });
+
+    $$("#groupChips .ontap-chip").forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        var g = chip.dataset.group;
+        if (g === "all") {
+          $$("#groupChips .ontap-chip").forEach(function (c) { c.classList.remove("active"); });
+          chip.classList.add("active");
+          state.selectedGroups = new Set(["all"]);
+        } else {
+          // remove "all" if present
+          var allChip = $("#groupChips .ontap-chip[data-group='all']");
+          allChip.classList.remove("active");
+          state.selectedGroups.delete("all");
+          // toggle this
+          if (state.selectedGroups.has(g)) {
+            state.selectedGroups.delete(g);
+            chip.classList.remove("active");
+          } else {
+            state.selectedGroups.add(g);
+            chip.classList.add("active");
+          }
+          // if nothing selected, fall back to "all"
+          if (state.selectedGroups.size === 0) {
+            allChip.classList.add("active");
+            state.selectedGroups.add("all");
+          }
+        }
+      });
+    });
+  }
+
+  // ============================================================
+  // 10. Start / Submit
+  // ============================================================
+  function startTest() {
+    fetchQuizzesFromFiles(function () {
+      state.currentQuiz = generateQuizSet();
+      state.answers = {};
+      if (state.currentQuiz.length === 0) {
+        $("#emptyHint").classList.remove("hide");
+        $("#testArea").innerHTML = "";
+        $("#progressBar").classList.add("hide");
+        $("#submitBtn").classList.add("hide");
+        return;
+      }
+      $("#emptyHint").classList.add("hide");
+      $("#progressBar").classList.remove("hide");
+      $("#submitBtn").classList.remove("hide");
+      renderQuizSet(state.currentQuiz);
+      updateProgress();
+      // scroll to test area
+      setTimeout(function () {
+        $("#testArea").scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
+    });
+  }
+
+  // ============================================================
+  // 11. Init
+  // ============================================================
+  document.addEventListener("DOMContentLoaded", function () {
+    bindSettings();
+    $("#startBtn").addEventListener("click", startTest);
+    $("#submitBtn").addEventListener("click", showResult);
+    $("#resultClose").addEventListener("click", hideResult);
+    $("#resultRestart").addEventListener("click", function () {
+      hideResult();
+      startTest();
+    });
+    // preload fetch silently so first start is fast
+    fetchQuizzesFromFiles(function () {});
+  });
+})();
+</script>
+
+</body>
+</html>
